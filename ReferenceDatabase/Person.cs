@@ -12,9 +12,9 @@ namespace ReferenceDatabase
             IsPrimaryKey = true,
             IsDbGenerated = true,
             CanBeNull = false,
-            UpdateCheck = UpdateCheck.Always,
-            Expression = "INT NOT NULL IDENTITY")]
-        public int Id { get; set; }
+            AutoSync = AutoSync.OnInsert,
+            DbType = "INT NOT NULL IDENTITY")]
+        public int PersonId { get; set; }
 
         [Column]
         public string FirstName { get; set; }

@@ -18,23 +18,27 @@ namespace ReferenceDatabase
 
         private void CreateLocalDBButton_Click(object sender, RoutedEventArgs e)
         {
+            // Uri to the reference database
+            var uri = new Uri("ReferenceDB.sdf", UriKind.Relative);
+
             // Obtain the virtual store for the application.
-            IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication();
-
-            // Create a stream for the file in the installation folder.
-            using (Stream input = Application.GetResourceStream(new Uri("ReferenceDB.sdf", UriKind.Relative)).Stream)
+            using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                // Create a stream for the new file in isolated storage.
-                using (IsolatedStorageFileStream output = iso.CreateFile("ReferenceDB.sdf"))
+                // Create a stream for the file in the installation folder.
+                using (Stream input = Application.GetResourceStream(uri).Stream)
                 {
-                    // Initialize the buffer.
-                    byte[] readBuffer = new byte[4096];
-                    int bytesRead = -1;
-
-                    // Copy the file from the installation folder to isolated storage.
-                    while ((bytesRead = input.Read(readBuffer, 0, readBuffer.Length)) > 0)
+                    // Create a stream for the new file in isolated storage.
+                    using (IsolatedStorageFileStream output = iso.CreateFile("ReferenceDB.sdf"))
                     {
-                        output.Write(readBuffer, 0, bytesRead);
+                        // Initialize the buffer.
+                        byte[] readBuffer = new byte[4096];
+                        int bytesRead = -1;
+
+                        // Copy the file from the installation folder to isolated storage.
+                        while ((bytesRead = input.Read(readBuffer, 0, readBuffer.Length)) > 0)
+                        {
+                            output.Write(readBuffer, 0, bytesRead);
+                        }
                     }
                 }
             }
